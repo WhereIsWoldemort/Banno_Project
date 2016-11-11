@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -28,7 +27,7 @@ public class Main {
 	final static String URL = "https://banno.com/";
 	
 	public static void main(String[] args) throws Exception {
-		String entityString = "";
+		ExtendedString entityString;
 		int matches = 0;
 		int twitterIndexStart = 0;
 		int twitterIndexEnd = 0;
@@ -47,7 +46,7 @@ public class Main {
 			// A. get the entity from the response	
 			try {
 				HttpEntity entity = response.getEntity();
-				entityString = EntityUtils.toString(entity);
+				entityString = new ExtendedString(EntityUtils.toString(entity));
 			} finally {
 				response.close();
 			}
@@ -57,23 +56,21 @@ public class Main {
 		}
 
 		// 3. find the number of platform features offered
-		matches = countMatches("platform-feature", entityString);
-		System.out.print("Number of platform features: ");
-		System.out.println(matches);
+		matches = entityString.countMatches("platform-feature");
+		System.out.println("Number of platform features: " + matches);
 
 		// 4. find the top three occurring alphanumeric characters
-		finalMap = getCharacterMap(entityString);
-		System.out.println("Most common alphanumeric characters:");
-		for (Map.Entry<Character, Integer> entry : finalMap.entrySet()) {
-			System.out.print(entry.getKey());
-			System.out.print(": ");
-			System.out.println(entry.getValue());	
-		}
+		// finalMap = getCharacterMap(entityString);
+		// System.out.println("Most common alphanumeric characters:");
+		// for (Map.Entry<Character, Integer> entry : finalMap.entrySet()) {
+		// 	System.out.print(entry.getKey());
+		// 	System.out.print(": ");
+		// 	System.out.println(entry.getValue());	
+		// }
 
 		// 5. find the number of .png images
-		matches = countMatches(".png", entityString);
-		System.out.print("Number of PNG images: ");
-		System.out.println(matches);
+		matches = entityString.countMatches(".png");
+		System.out.println("Number of PNG images: " + matches);
 
 		// 6. find Twitter handle
 		twitterIndexStart = entityString.indexOf("\"https://twitter.com/");
@@ -82,29 +79,28 @@ public class Main {
 		String twitterURL = entityString.substring(twitterIndexStart + 1, twitterIndexEnd);
 
 		twitterHandle = twitterURL.substring("https://twitter.com/".length());
-		System.out.print("Twitter Handle: ");
-		System.out.println(twitterHandle);
+		System.out.println("Twitter Handle: " + twitterHandle);
 
 		// 7. find the number of times "fincancial institution" occur
-		System.out.print("Number of times \"financial institution\" occurs: ");
-		matches = countMatches("financial institution", entityString);
-		System.out.println(matches);
 
-		getCharacterMap(entityString);
+		matches = entityString.countMatches("financial institution");
+		System.out.println("Number of times \"financial institution\" occurs: " + matches);
+
+		// getCharacterMap(entityString);
 
 	}
 
-	private static int countMatches(String regexString, String input) {
-		Pattern regexPattern = Pattern.compile(regexString);
-		Matcher regexMatcher = regexPattern.matcher(input);
-		int matches = 0;
+	// private static int countMatches(String regexString, String input) {
+	// 	Pattern regexPattern = Pattern.compile(regexString);
+	// 	Matcher regexMatcher = regexPattern.matcher(input);
+	// 	int matches = 0;
 
-		while (regexMatcher.find()) {
-			matches++;
-		}
+	// 	while (regexMatcher.find()) {
+	// 		matches++;
+	// 	}
 
-		return matches;
-	}
+	// 	return matches;
+	// }
 
 	private static String getTwitterHandle(String input) {
 		return null;
