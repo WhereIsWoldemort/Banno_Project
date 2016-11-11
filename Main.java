@@ -28,10 +28,8 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		ExtendedString entityString;
-		int matches = 0;
-		int twitterIndexStart = 0;
-		int twitterIndexEnd = 0;
-		String twitterHandle = "";
+		int matches;
+		String twitterHandle;
 		Map<Character, Integer> finalMap = new HashMap<Character, Integer>();
 
 		// 1. create the client
@@ -73,13 +71,9 @@ public class Main {
 		System.out.println("Number of PNG images: " + matches);
 
 		// 6. find Twitter handle
-		twitterIndexStart = entityString.indexOf("\"https://twitter.com/");
-		twitterIndexEnd = entityString.indexOf("\"", twitterIndexStart + 1);
+		twitterHandle = getTwitterHandle(entityString);
+		System.out.println("Twitter handle: " + twitterHandle);
 
-		String twitterURL = entityString.substring(twitterIndexStart + 1, twitterIndexEnd);
-
-		twitterHandle = twitterURL.substring("https://twitter.com/".length());
-		System.out.println("Twitter Handle: " + twitterHandle);
 
 		// 7. find the number of times "fincancial institution" occur
 
@@ -102,8 +96,20 @@ public class Main {
 	// 	return matches;
 	// }
 
-	private static String getTwitterHandle(String input) {
-		return null;
+	private static String getTwitterHandle(ExtendedString input) {
+		int twitterIndexStart;
+		int twitterIndexEnd;
+		String twitterURL;
+		String twitterHandle;
+
+		twitterIndexStart = input.indexOf("\"https://twitter.com/");
+		twitterIndexEnd = input.indexOf("\"", twitterIndexStart + 1);
+
+		twitterURL = input.substring(twitterIndexStart + 1, twitterIndexEnd);
+
+		twitterHandle = twitterURL.substring("https://twitter.com/".length());
+
+		return twitterHandle;
 	}
 
 	private static Map<Character, Integer> getCharacterMap(String input) {
