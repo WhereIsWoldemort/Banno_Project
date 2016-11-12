@@ -4,6 +4,9 @@
 // Description:		a program that tests the ExtendedString class 																						//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class ExtendedStringTester {
 	public static void main(String[] args) {
 		testCountMatches(1);
@@ -12,6 +15,9 @@ public class ExtendedStringTester {
 		testIndexOf(2);
 		testIndexOf(3);
 		testSubstring(1);
+		testGetCharacterMap(1);
+		testGetTopCharacters(1);
+		testGetTopCharacters(2);
 	}
 
 	private static void testCountMatches(int testNumber) {
@@ -79,23 +85,33 @@ public class ExtendedStringTester {
 		System.out.println("");
 	}
 
-	// private static void testGetMostCommonCharacterFromSet(int testNumber) {
-	// 	ExtendedString extendedString = new ExtendedString("Hello my name is Ethan. Ethan is my name. How many times does Ethan occur? Will you play this game?");
-	// 	Integer numOfMatches = 0;
-	// 	Map<Character, int> characterMap = new HashMap<Character, int>();
+	private static void testGetCharacterMap(int testNumber) {
+		ExtendedString extendedString = new ExtendedString("Hello my name is Ethan.");
+		Integer numOfMatches = 0;
+		Map<Character, Integer> characterMap = new HashMap<Character, Integer>();
 
-	// 	switch (testNumber) {
-	// 		case 1:
-	// 			Set<char> characterSet = new HashSet<char>();
-	// 			characterSet.add('a');
-	// 			characterSet.add('b');
-	// 			characterMap = extendedString.getMostCommonCharacterFromSet(characterSet);
+		switch (testNumber) {
+			case 1:
+				characterMap = extendedString.getCharacterMap();
+				System.out.println("Actual: characterMap = " + characterMap + " | Expected: characterMap = " + "{ =4, a=2, e=3, h=2, i=1, l=2, m=2, n=2, .=1, o=1, s=1, t=1, y=1}");
+				break;
+		}
+	}
 
-	// 			for ()
-	// 			System.out.println("Actual: Character = " + characterEntry.getKey() + ", Count = " + characterEntry.getValue() + " | Expected: Character = a, Count = 8");
-	// 			break;
-	// 		case 2:
-	// 			break; 
-	// 	}
-	// }
+	private static void testGetTopCharacters(int testNumber) {
+		ExtendedString extendedString = new ExtendedString("Hello my name is Ethan.");
+		Map<Character, Integer> topCharactersMap = new HashMap<Character, Integer>();
+
+		switch (testNumber) {
+			case 1:
+				topCharactersMap = extendedString.getTopCharacters(3);
+				System.out.println("Actual: characterMap = " + topCharactersMap + " | Expected: characterMap = " + "{a=2, e=3, h=2}");
+				break;
+			case 2:
+				topCharactersMap = extendedString.getTopCharacters(15);
+				System.out.println("Actual: characterMap = " + topCharactersMap + " | Expected: characterMap = " + "{a=2, e=3, h=2, i=1, l=2, m=2, n=2, o=1, s=1, t=1, y=1}");
+				break;
+		}
+
+	}
 }

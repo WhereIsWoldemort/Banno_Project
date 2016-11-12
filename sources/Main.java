@@ -30,12 +30,11 @@ public class Main {
 		ExtendedString entityString;
 		int matches;
 		String twitterHandle;
-		Map<Character, Integer> finalMap = new HashMap<Character, Integer>();
+		Map<Character, Integer> topCharactersMap = new HashMap<Character, Integer>();
 
 		// 1. create the client
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
-		
 		// 2. request web page for banno.com 
 		try {
 			HttpGet request = new HttpGet(URL);
@@ -58,13 +57,11 @@ public class Main {
 		System.out.println("Number of platform features: " + matches);
 
 		// 4. find the top three occurring alphanumeric characters
-		// finalMap = getCharacterMap(entityString);
-		// System.out.println("Most common alphanumeric characters:");
-		// for (Map.Entry<Character, Integer> entry : finalMap.entrySet()) {
-		// 	System.out.print(entry.getKey());
-		// 	System.out.print(": ");
-		// 	System.out.println(entry.getValue());	
-		// }
+		topCharactersMap = entityString.getTopCharacters(3);
+		System.out.println("Top 3 occurring alphanumeric characters...");
+		for (Map.Entry<Character, Integer> entry : topCharactersMap.entrySet()) {
+			System.out.println(entry.getKey() + ": " + entry.getValue());
+		}
 
 		// 5. find the number of .png images
 		matches = entityString.countMatches(".png");
@@ -74,28 +71,17 @@ public class Main {
 		twitterHandle = getTwitterHandle(entityString);
 		System.out.println("Twitter handle: " + twitterHandle);
 
-
 		// 7. find the number of times "fincancial institution" occur
-
 		matches = entityString.countMatches("financial institution");
 		System.out.println("Number of times \"financial institution\" occurs: " + matches);
 
-		// getCharacterMap(entityString);
-
 	}
 
-	// private static int countMatches(String regexString, String input) {
-	// 	Pattern regexPattern = Pattern.compile(regexString);
-	// 	Matcher regexMatcher = regexPattern.matcher(input);
-	// 	int matches = 0;
-
-	// 	while (regexMatcher.find()) {
-	// 		matches++;
-	// 	}
-
-	// 	return matches;
-	// }
-
+	/** 
+	 ** Extracts the twitter handle from the retrieved HTML document.
+	 ** @param input The HTML document given as a string.
+	 ** @return The twitter handle as a string.
+	 */
 	private static String getTwitterHandle(ExtendedString input) {
 		int twitterIndexStart;
 		int twitterIndexEnd;
@@ -110,42 +96,5 @@ public class Main {
 		twitterHandle = twitterURL.substring("https://twitter.com/".length());
 
 		return twitterHandle;
-	}
-
-	private static Map<Character, Integer> getCharacterMap(String input) {
-		Map<Character, Integer> characterMap = new HashMap<Character, Integer>();
-		Map<Character, Integer> finalMap = new HashMap<Character, Integer>();
-		Integer currentIndex = 0;
-
-		// 1. make a Map of all characters and number of times they occur 
-		for (int i = 0; i < input.length(); i++) {
-			Character character = input.charAt(i);
-			
-			currentIndex = characterMap.putIfAbsent(character, 1);
-
-			if (currentIndex != null) {
-				characterMap.put(character, currentIndex + 1);
-			}
-		}
-
-		// 2. find the top three occurring entries in the above character map
-		for (int i = 0; i < 3; i++) {	
-			Character largestKey = null;
-			Integer largestValue = 0;
-
-			for (Map.Entry<Character, Integer> entry : characterMap.entrySet()) {
-				Character key = entry.getKey();
-				Integer value = entry.getValue();
-
-				if ((value > largestValue) && (Character.isLetterOrDigit(key))) {
-					largestValue = value;
-					largestKey = key;
-				}
-			}
-			characterMap.remove(largestKey);
-			finalMap.put(largestKey, largestValue);
-		}	
-
-		return finalMap;
 	}
 }
