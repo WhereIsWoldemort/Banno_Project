@@ -8,12 +8,7 @@ Compilation and Run Instructions
 - to run:
 	1. move to "classes" directory (<directory_path>/Banno_Project/classes)
 	2. type "java Main"
-
-Notes
------
-
-
-
+	
 Known Issues
 ------------
 > The getCharacterMap() method in the ExtendedString class is slow because it's analyzing every individual character in a large text file (the HTML document for banno.com). As a result, there is a little of a delay
