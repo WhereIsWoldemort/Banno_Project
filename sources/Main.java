@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -67,7 +66,6 @@ public class Main {
 		// 7. find the number of times "fincancial institution" occur
 		matches = entityString.countMatches("financial institution");
 		System.out.println("Number of times \"financial institution\" occurs: " + matches);
-
 	}
 
 	/** 
@@ -76,16 +74,19 @@ public class Main {
 	 ** @return The twitter handle as a string.
 	 */
 	private static String getTwitterHandle(ExtendedString input) {
-		int twitterIndexStart;
-		int twitterIndexEnd;
-		String twitterURL;
-		String twitterHandle;
+		int 		twitterIndexStart;
+		int 		twitterIndexEnd;
+		String 		twitterURL;
+		String 		twitterHandle;
 
+		// 1. get the starting and ending index of the full twitter URL (the handle is the suffix of this)
 		twitterIndexStart = input.indexOf("\"https://twitter.com/");
 		twitterIndexEnd = input.indexOf("\"", twitterIndexStart + 1);
 
+		// 2. get the URL substring
 		twitterURL = input.substring(twitterIndexStart + 1, twitterIndexEnd);
 
+		// 3. get the twitter handle
 		twitterHandle = twitterURL.substring("https://twitter.com/".length());
 
 		return twitterHandle;

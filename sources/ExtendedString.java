@@ -80,7 +80,7 @@ public class ExtendedString {
 		return string;
 	}
 
-	/** Analyzes the string to find the most common characters in this string that belong to the given character set.
+	/** Generates a map of all characters contained in the string data and how many times they occur.
 	 ** @return A map of all characters in the string data.
 	 */
 	public Map<Character, Integer> getCharacterMap() {
@@ -110,8 +110,8 @@ public class ExtendedString {
 
 	/** 
 	 ** Extracts the twitter handle from the retrieved HTML document.
-	 ** @param characterMap A map in which you want to find the top 3 occurring characters;
-	 ** @return The twitter handle as a string.
+	 ** @param numberOfEntries The number of entries to get the top values of.
+	 ** @return A map containing the top numberOfEntries characters and their values in the string data.
 	 */
 	public Map<Character, Integer> getTopCharacters(int numberOfEntries) {
 		Integer 					bestValue;
@@ -137,11 +137,12 @@ public class ExtendedString {
 			characterMap.remove(keysToRemove.get(i));
 		}
 
-		// 1. put an upper bound on the number of entries that can be picked
+		// 2. put an upper bound on the number of entries that can be picked
 		if (numberOfEntries > characterMap.size()) {
 			numberOfEntries = characterMap.size();
 		}
 
+		// 3. get the top numberOfEntries characters and their values and put them into a map to be returned
 		for (int i = 0; i < numberOfEntries; i++) {
 			bestValue = 0;
 			bestKey = null;
@@ -155,6 +156,7 @@ public class ExtendedString {
 				}
 			}
 
+			// we remove the largest key chosen from the map, so we don't pick it again
 			characterMap.remove(bestKey);
 			topCharactersMap.put(bestKey, bestValue);
 		}
